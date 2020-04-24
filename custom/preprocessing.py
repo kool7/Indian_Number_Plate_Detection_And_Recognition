@@ -10,8 +10,11 @@ from PIL import Image
 
 def croppedImage(image, count):
   gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+  gray = cv2.bilateralFilter(gray, 11, 20, 20)
+  gray = cv2.resize(gray, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
   gray = cv2.threshold(gray, 0, 255,cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-  gray = cv2.medianBlur(gray, 3)
+  # gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 85, 90)
+  # gray = cv2.Canny(gray, 70, 100)
   pathPng='cropped'
   count += 1
   filename = os.path.join(pathPng,'{}.png'.format(count))
